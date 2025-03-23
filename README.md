@@ -50,6 +50,14 @@ mcprox generate --url <swagger-url> --output ./my-mcp-server
 mcprox generate --url <swagger-url> --timeout 60
 ```
 
+All configuration is done through command line flags. The available options are:
+
+- `--url`, `-u`: URL to fetch OpenAPI documentation (required)
+- `--timeout`, `-t`: Timeout in seconds for HTTP requests (default: 30)
+- `--output`, `-o`: Output directory for generated server (default: ./generated)
+- `--service-url`: Base URL of your API service
+- `--service-auth`: Authorization header for API requests
+
 ## Architecture
 
 The generated MCP proxy serves as a bridge between LLMs (like Claude, GPT, etc.) and your existing API:
@@ -115,23 +123,6 @@ generated_mcp_server/
     └── __init__.py     # Package marker
 ```
 
-## Configuration
-
-You can configure the tool using a YAML file (`~/.mcprox.yaml`):
-
-```yaml
-debug: false
-client:
-  timeout: 30 # HTTP client timeout in seconds
-server:
-  port: 8080 # Port for the generated MCP server
-output:
-  dir: ./generated # Output directory for generated files
-service:
-  url: https://api.example.com # Base URL of your API
-  authorization: Bearer your-token # Auth header for API requests
-```
-
 ## Environment Variables
 
 The generated MCP server respects the following environment variables:
@@ -149,6 +140,7 @@ Future plans for MCProx include:
 - Integration with local OpenAPI spec files
 - Support for generating mock responses
 - Improved schema validation and error handling
+- Configuration via YAML file
 
 ## License
 
