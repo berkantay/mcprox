@@ -1,4 +1,4 @@
-# MCProx
+# mcprox
 
 A robust, production-ready tool that retrieves and parses OpenAPI/Swagger documentation and generates a fully functional Model Context Protocol (MCP) proxy. MCProx makes your existing APIs instantly accessible to LLMs without any modification to your codebase.
 
