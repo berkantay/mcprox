@@ -45,6 +45,9 @@ mcprox generate --url <swagger-url> --service-url <api-base-url> --service-auth 
 
 # Configure the output directory
 mcprox generate --url <swagger-url> --output ./my-mcp-server
+
+# Set timeout for HTTP requests
+mcprox generate --url <swagger-url> --timeout 60
 ```
 
 ## Architecture
@@ -67,6 +70,19 @@ This architecture allows you to:
 - Add a validation layer that ensures LLM requests are properly formatted
 - Maintain separation between LLM interactions and your core business logic
 
+## How It Works
+
+MCProx works in several stages:
+
+1. **OpenAPI Parsing**: Fetches and parses OpenAPI/Swagger documentation from the provided URL
+2. **Schema Analysis**: Analyzes endpoints, methods, parameters, and schemas
+3. **Code Generation**: Generates Python code for an MCP server, including:
+   - Tool definitions that map to API endpoints
+   - Parameter validation based on OpenAPI schemas
+   - HTTP client for making real API requests
+   - Error handling and logging
+4. **Project Structure**: Creates a complete Python project structure with all necessary files
+
 ## Generated Server
 
 The generated MCP server is a Python application that includes:
@@ -87,7 +103,6 @@ The generated project follows modern Python best practices:
 generated_mcp_server/
 ├── pyproject.toml      # Project metadata and dependencies
 ├── README.md           # Auto-generated documentation
-├── requirements.txt    # Python dependencies
 ├── .gitignore          # Git ignore file
 ├── scripts/            # Utility scripts
 │   ├── setup.sh        # Unix setup script
@@ -117,9 +132,23 @@ service:
   authorization: Bearer your-token # Auth header for API requests
 ```
 
+## Environment Variables
+
+The generated MCP server respects the following environment variables:
+
+- `SERVICE_URL`: Base URL of the API service (default: http://localhost:8080)
+- `PORT`: Port for the MCP server to listen on (default: 8000)
+
 ## Roadmap
 
-MCProx is currently under active development.
+Future plans for MCProx include:
+
+- Support for more authentication methods
+- Generation of client libraries in multiple languages
+- More customization options for generated MCP servers
+- Integration with local OpenAPI spec files
+- Support for generating mock responses
+- Improved schema validation and error handling
 
 ## License
 
