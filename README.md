@@ -1,0 +1,126 @@
+# MCProx
+
+A robust, production-ready tool that retrieves and parses OpenAPI/Swagger documentation and generates a fully functional Model Context Protocol (MCP) proxy. MCProx makes your existing APIs instantly accessible to LLMs without any modification to your codebase.
+
+## Features
+
+- **OpenAPI/Swagger Integration**: Automatically fetches and parses Swagger documentation from any URL
+- **Python MCP Server Generation**: Creates a fully functional MCP server in Python using modern best practices
+- **Bridge Between LLMs and APIs**: Acts as a middleware layer that translates between LLM function calls and REST API endpoints
+- **Real API Integration**: Makes actual HTTP requests to the original API, supporting all HTTP methods and authentication
+- **Comprehensive Parsing**: Analyzes endpoints, methods, parameters, and schemas to create a complete MCP representation
+- **Modern Python Structure**: Generates a well-structured Python project with virtual environment support
+- **Production-Ready**: Built with robust error handling, logging, and configuration options
+- **Well-Structured**: Organized codebase following best practices for Go and Python projects
+
+## Quick Start
+
+```bash
+# Install the tool
+go install github.com/berkantay/mcprox@latest
+
+# Generate an MCP proxy from an OpenAPI spec
+mcprox generate --url https://api.example.com/openapi.json --service-url https://api.example.com
+
+# Set up the Python environment (using uv for faster dependency management)
+cd generated_mcp_server
+./scripts/setup.sh  # or scripts/setup.bat on Windows
+
+# Run the generated server
+source .venv/bin/activate  # or .venv\Scripts\activate.bat on Windows
+python -m src.mcp_server
+```
+
+## Usage
+
+```bash
+# Basic usage
+mcprox generate --url <swagger-url>
+
+# Connect to the original API service
+mcprox generate --url <swagger-url> --service-url <api-base-url>
+
+# Add authentication to API requests
+mcprox generate --url <swagger-url> --service-url <api-base-url> --service-auth "Bearer token123"
+
+# Configure the output directory
+mcprox generate --url <swagger-url> --output ./my-mcp-server
+```
+
+## Architecture
+
+The generated MCP proxy serves as a bridge between LLMs (like Claude, GPT, etc.) and your existing API:
+
+```
+[LLM] → [MCP Proxy] → [Original API]
+```
+
+1. The LLM sends a function call request to the MCP proxy
+2. The MCP proxy validates the parameters based on OpenAPI specifications
+3. The proxy translates the function call into an HTTP request to your API
+4. Your API processes the request and returns a response
+5. The MCP proxy formats the response and sends it back to the LLM
+
+This architecture allows you to:
+
+- Make your existing APIs instantly accessible to LLMs without modifying them
+- Add a validation layer that ensures LLM requests are properly formatted
+- Maintain separation between LLM interactions and your core business logic
+
+## Generated Server
+
+The generated MCP server is a Python application that includes:
+
+- **Complete Project Structure**: With `src`, `tests`, and `scripts` directories
+- **Modern Python Tooling**: Using `pyproject.toml` for dependency management
+- **Virtual Environment Support**: Setup scripts for easy environment creation
+- **MCP Protocol Endpoint**: Available at `POST /api/mcp`
+- **Health Check Endpoint**: Available at `GET /health`
+- **Configuration Options**: Port configuration via environment variables
+- **Real API Integration**: Automatically forwards requests to your original API
+
+## Project Structure
+
+The generated project follows modern Python best practices:
+
+```
+generated_mcp_server/
+├── pyproject.toml      # Project metadata and dependencies
+├── README.md           # Auto-generated documentation
+├── requirements.txt    # Python dependencies
+├── .gitignore          # Git ignore file
+├── scripts/            # Utility scripts
+│   ├── setup.sh        # Unix setup script
+│   ├── setup.bat       # Windows setup script
+│   └── run.py          # Server run script
+├── src/                # Source code
+│   ├── __init__.py     # Package marker
+│   └── mcp_server.py   # MCP server implementation
+└── tests/              # Test directory
+    └── __init__.py     # Package marker
+```
+
+## Configuration
+
+You can configure the tool using a YAML file (`~/.mcprox.yaml`):
+
+```yaml
+debug: false
+client:
+  timeout: 30 # HTTP client timeout in seconds
+server:
+  port: 8080 # Port for the generated MCP server
+output:
+  dir: ./generated # Output directory for generated files
+service:
+  url: https://api.example.com # Base URL of your API
+  authorization: Bearer your-token # Auth header for API requests
+```
+
+## Roadmap
+
+MCProx is currently under active development.
+
+## License
+
+This project is licensed under the MIT License - see the LICENSE file for details.
