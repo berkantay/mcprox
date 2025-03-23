@@ -42,6 +42,9 @@ func showHelp() {
 	fmt.Println("    # Generate with increased timeout")
 	fmt.Println("    mcprox generate --url https://api.example.com/swagger --timeout 60")
 
+	fmt.Println("    # Generate with custom output directory")
+	fmt.Println("    mcprox generate --url https://api.example.com/swagger --output /path/to/output")
+
 	fmt.Println("    # Use a custom configuration file")
 	fmt.Println("    mcprox --config /path/to/config.yaml generate --url http://localhost:8080/swagger/doc.json")
 

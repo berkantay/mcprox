@@ -13,6 +13,7 @@ import (
 var (
 	swaggerURL string
 	timeout    int
+	outputDir  string
 )
 
 func init() {
@@ -30,6 +31,7 @@ Example:
 	generateCmd.Flags().StringVarP(&swaggerURL, "url", "u", "", "URL to fetch OpenAPI documentation (required)")
 	generateCmd.MarkFlagRequired("url")
 	generateCmd.Flags().IntVarP(&timeout, "timeout", "t", 30, "Timeout in seconds for HTTP requests")
+	generateCmd.Flags().StringVarP(&outputDir, "output", "o", "", "Output directory for generated server (default is ./generated)")
 
 	rootCmd.AddCommand(generateCmd)
 }
@@ -49,7 +51,7 @@ func generateMCP(cmd *cobra.Command, args []string) error {
 	}
 
 	// Create MCP generator
-	generator := mcp.NewGenerator(logger)
+	generator := mcp.NewGenerator(logger, outputDir)
 
 	// Generate MCP server
 	if err := generator.Generate(ctx, doc); err != nil {
